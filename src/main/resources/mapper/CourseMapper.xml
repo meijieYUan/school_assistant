@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itajay.spring_ai_schoolassistant.mapper.CourseMapper">
+
+    <select id="findOneDayCourses"
+            resultType="com.itajay.spring_ai_schoolassistant.entity.vo.CourseScheduleView">
+
+        SELECT c.course_name    AS courseName,
+               c.teacher_name   AS teacherName,
+               cs.day_of_week   AS dayOfWeek,
+               cs.start_section AS startSection,
+               cs.end_section   AS endSection,
+               cs.start_week    AS startWeek,
+               cs.end_week      AS endWeek,
+               cs.week_type     AS weekType,
+               cs.classroom     AS classroom
+        FROM course c
+                 LEFT JOIN course_schedule cs ON c.id = cs.course_id
+        WHERE cs.day_of_week = #{dayOfWeek}
+          AND #{week} BETWEEN cs.start_week AND cs.end_week
+        ORDER BY cs.start_section
+    </select>
+
+    <select id="findOneWeekCourses"
+            resultType="com.itajay.spring_ai_schoolassistant.entity.vo.CourseScheduleView">
+
+        SELECT c.course_name    AS courseName,
+               c.teacher_name   AS teacherName,
+               cs.day_of_week   AS dayOfWeek,
+               cs.start_section AS startSection,
+               cs.end_section   AS endSection,
+               cs.start_week    AS startWeek,
+               cs.end_week      AS endWeek,
+               cs.week_type     AS weekType,
+               cs.classroom     AS classroom
+        FROM course c
+                 LEFT JOIN course_schedule cs ON c.id = cs.course_id
+        WHERE  #{week} BETWEEN cs.start_week AND cs.end_week
+        ORDER BY cs.day_of_week, cs.start_section
+    </select>
+</mapper>
