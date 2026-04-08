@@ -1,15 +1,12 @@
 package com.itajay.spring_ai_schoolassistant;
 
 
-import com.itajay.spring_ai_schoolassistant.entity.vo.CourseScheduleView;
-import com.itajay.spring_ai_schoolassistant.service.CourseService;
 import com.itajay.spring_ai_schoolassistant.service.impl.CourseServiceImpl;
 import com.itajay.spring_ai_schoolassistant.service.impl.DocumentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.ExtractedTextFormatter;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
-import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.SearchRequest;
@@ -46,7 +43,7 @@ class SpringAiSchoolAssistantApplicationTests {
 
     @Test
     public void testPagePdfReader(){
-        FileSystemResource fileSystemResource = new FileSystemResource("src/main/resources/LeetCode经典面试题150解题思路总结.pdf");
+        FileSystemResource fileSystemResource = new FileSystemResource("src/main/resources/面试八股指南.pdf");
         PagePdfDocumentReader pagePdfDocumentReader = new PagePdfDocumentReader(fileSystemResource);
         List<Document> documents = pagePdfDocumentReader.read();
         for(var doc:documents){
@@ -79,8 +76,8 @@ class SpringAiSchoolAssistantApplicationTests {
 
     @Test
     public void testDocumentService(){
-        FileSystemResource fileSystemResource = new FileSystemResource("src/main/resources/LeetCode经典面试题150解题思路总结.pdf");
-        documentService.EmbeddingDocument(fileSystemResource);
+        FileSystemResource fileSystemResource = new FileSystemResource("src/main/resources/面试八股指南.pdf");
+        documentService.ParagraphPdfEmbeddingDocument(fileSystemResource);
     }
 
     @Test

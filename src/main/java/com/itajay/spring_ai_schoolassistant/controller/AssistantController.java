@@ -6,8 +6,10 @@ import com.itajay.spring_ai_schoolassistant.entity.vo.CourseScheduleView;
 import com.itajay.spring_ai_schoolassistant.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -31,6 +33,7 @@ public class AssistantController {
                 .system(SystemConsistant.SYSTEM_PROMPT)
                 .user(message)
                 .advisors(advisor->advisor.param(ChatMemory.CONVERSATION_ID,chatId))
+                //.advisors(advisorSpec -> advisorSpec.param(QuestionAnswerAdvisor.FILTER_EXPRESSION,"source=='LeetCode经典面试题150解题思路总结.pdf'"))
                 //.tools()
                 .stream()
                 .content();
