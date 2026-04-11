@@ -20,6 +20,11 @@
     </properties>
 
     <dependencies>
+        <!--RAG的检索增强功能-->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-rag</artifactId>
+        </dependency>
         <!--tika阅读器，支持各种类型的文档 .doc .pdf .md-->
         <dependency>
             <groupId>org.springframework.ai</groupId>
@@ -35,7 +40,7 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-vector-store-qdrant</artifactId>
         </dependency>
-        <!--向量增强顾问-->
+        <!--向量数据库-->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-advisors-vector-store</artifactId>

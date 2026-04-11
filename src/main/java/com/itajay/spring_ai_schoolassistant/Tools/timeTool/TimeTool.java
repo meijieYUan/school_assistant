@@ -1,4 +1,4 @@
-package com.itajay.spring_ai_schoolassistant.Tools;
+package com.itajay.spring_ai_schoolassistant.Tools.timeTool;
 
 
 

@@ -1,43 +1,47 @@
-
 create schema if not exists school_assistant;
 use school_assistant;
 
 -- Spring AI Chat 记忆数据库初始化脚本
-CREATE TABLE IF NOT EXISTS chat_memory (
+CREATE TABLE IF NOT EXISTS chat_memory
+(
     conversation_id VARCHAR(36) NOT NULL,
-    type enum('USER', 'ASSISTANT', 'SYSTEM', 'TOOL'),
-    content TEXT NOT NULL,
-    timestamp TIMESTAMP NOT NULL,
+    type            enum ('USER', 'ASSISTANT', 'SYSTEM', 'TOOL'),
+    content         TEXT        NOT NULL,
+    timestamp       TIMESTAMP   NOT NULL,
     INDEX idx_conversation_id (conversation_id)
-    );
+);
 -- 课程表
-CREATE TABLE IF NOT EXISTS course (
-                  id int PRIMARY KEY AUTO_INCREMENT COMMENT '课程ID',
-                  course_name VARCHAR(128) NOT NULL COMMENT '课程名称',
-                  teacher_name VARCHAR(128) COMMENT '教师名称'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '课程信息表';
+CREATE TABLE IF NOT EXISTS course
+(
+    id           int PRIMARY KEY AUTO_INCREMENT COMMENT '课程ID',
+    course_name  VARCHAR(128) NOT NULL COMMENT '课程名称',
+    teacher_name VARCHAR(128) COMMENT '教师名称'
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT = '课程信息表';
 drop table if exists course_schedule;
 -- 课程安排表
-CREATE TABLE IF NOT EXISTS course_schedule (
-   id int PRIMARY KEY AUTO_INCREMENT COMMENT '课程安排ID',
-   course_id int NOT NULL COMMENT '课程ID',
-   day_of_week TINYINT NOT NULL COMMENT '星期几：1-7（1=周一，7=周日）',
-   start_section TINYINT NOT NULL COMMENT '开始节次',
-   end_section TINYINT NOT NULL COMMENT '结束节次',
-   start_week INT NOT NULL COMMENT '开始周',
-   end_week INT NOT NULL COMMENT '结束周',
-   week_type ENUM('EVERY','ODD', 'EVEN') NOT NULL COMMENT '每周(EVERY) / 奇数周(ODD) / 偶数周(EVEN)',
-   classroom VARCHAR(128) NOT NULL COMMENT '教室',
-   FOREIGN KEY (course_id) REFERENCES course(id) ON DELETE CASCADE,
-   INDEX idx_course_id (course_id),
-   INDEX idx_week_range (start_week, end_week),
-   CONSTRAINT chk_section CHECK (end_section >= start_section),
-   CONSTRAINT chk_week CHECK (start_week <= end_week AND start_week >= 1 AND end_week <= 53)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '课程排课表';
+CREATE TABLE IF NOT EXISTS course_schedule
+(
+    id            int PRIMARY KEY AUTO_INCREMENT COMMENT '课程安排ID',
+    course_id     int                          NOT NULL COMMENT '课程ID',
+    day_of_week   TINYINT                      NOT NULL COMMENT '星期几：1-7（1=周一，7=周日）',
+    start_section TINYINT                      NOT NULL COMMENT '开始节次',
+    end_section   TINYINT                      NOT NULL COMMENT '结束节次',
+    start_week    INT                          NOT NULL COMMENT '开始周',
+    end_week      INT                          NOT NULL COMMENT '结束周',
+    week_type     ENUM ('EVERY','ODD', 'EVEN') NOT NULL COMMENT '每周(EVERY) / 奇数周(ODD) / 偶数周(EVEN)',
+    classroom     VARCHAR(128)                 NOT NULL COMMENT '教室',
+    FOREIGN KEY (course_id) REFERENCES course (id) ON DELETE CASCADE,
+    INDEX idx_course_id (course_id),
+    INDEX idx_week_range (start_week, end_week),
+    CONSTRAINT chk_section CHECK (end_section >= start_section),
+    CONSTRAINT chk_week CHECK (start_week <= end_week AND start_week >= 1 AND end_week <= 53)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT = '课程排课表';
 
 -- 课程表数据
-INSERT INTO course (id, course_name, teacher_name) VALUES
-       (1, '高等数学', '张老师'),
+INSERT INTO course (id, course_name, teacher_name)
+VALUES (1, '高等数学', '张老师'),
        (2, '大学英语', '李老师'),
        (3, 'Java程序设计', '王老师'),
        (4, '数据结构', '赵老师'),
@@ -119,3 +123,47 @@ VALUES
 
 -- 软件工程：后半学期，每周
 (18, 9, 6, 7, 8, 11, 16, 'EVERY', '教学楼F102');
+
+
+CREATE TABLE IF NOT EXISTS course_assignment
+(
+    id          BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '作业ID',
+    course_id   INT          NOT NULL COMMENT '所属课程ID',
+    title       VARCHAR(255) NOT NULL COMMENT '作业标题',
+    description TEXT COMMENT '作业详细描述和要求',
+    deadline    DATETIME COMMENT '提交截止时间',
+    status      TINYINT UNSIGNED DEFAULT 1 COMMENT '作业状态：1-未发布，2-已发布，3-已结束',
+
+    create_time DATETIME         DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time DATETIME         DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+
+    INDEX idx_course_id (course_id),
+    INDEX idx_deadline (deadline),
+    INDEX idx_status (status),
+
+    FOREIGN KEY (course_id) REFERENCES course (id) ON DELETE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='课程作业表';
+
+CREATE TABLE IF NOT EXISTS task_list
+(
+    id            BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '任务ID',
+    title         VARCHAR(255) NOT NULL COMMENT '任务标题',
+    description   TEXT COMMENT '任务详细描述',
+    type          VARCHAR(32)      DEFAULT 'assignment' COMMENT '任务类型：assignment(作业)、exam(考试)、project(项目)、reminder(提醒)、other(其他)',
+
+    priority      TINYINT UNSIGNED DEFAULT 2 COMMENT '优先级：1-高，2-中，3-低',
+    status        TINYINT UNSIGNED DEFAULT 0 COMMENT '任务状态：0-待办，1-进行中，2-已完成，3-已逾期',
+
+    deadline      DATETIME COMMENT '截止时间',
+    complete_time DATETIME COMMENT '实际完成时间',
+
+    create_time   DATETIME         DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time   DATETIME         DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+
+    INDEX idx_status (status),
+    INDEX idx_priority (priority),
+    INDEX idx_deadline (deadline),
+    INDEX idx_type (type)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='用户任务清单表';
