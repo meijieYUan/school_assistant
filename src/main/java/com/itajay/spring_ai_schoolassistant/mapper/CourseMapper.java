@@ -12,7 +12,7 @@ public interface CourseMapper extends BaseMapper<Course> {
     /**
      * 查询指定周的星期几课程安排
      * @param week   第几周
-     * @param dayOfWeek     当星期几
+     * @param dayOfWeek     星期几
      * @return
      */
     List<CourseScheduleView> findOneDayCourses(Integer week, Integer dayOfWeek);

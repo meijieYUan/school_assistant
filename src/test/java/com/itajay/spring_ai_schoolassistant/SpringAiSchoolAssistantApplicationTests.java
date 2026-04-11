@@ -1,6 +1,7 @@
 package com.itajay.spring_ai_schoolassistant;
 
 
+import com.alibaba.fastjson2.JSON;
 import com.itajay.spring_ai_schoolassistant.service.impl.CourseServiceImpl;
 import com.itajay.spring_ai_schoolassistant.service.impl.DocumentService;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 
-@SpringBootTest
+//@SpringBootTest
 class SpringAiSchoolAssistantApplicationTests {
     @Autowired
      private DocumentService documentService;
@@ -200,6 +201,13 @@ class SpringAiSchoolAssistantApplicationTests {
             System.out.println("Chunk: " + doc.getText());
             System.out.println("Metadata: " + doc.getMetadata());
         }
+    }
+
+    @Test
+    void testMapToJSON(){
+        Map<String, String> taskResult = Map.of("task1", "result1", "task2", "result2", "task3", "result3");
+        String mapString = JSON.toJSONString(taskResult);
+        System.out.println(mapString);
     }
 
 }

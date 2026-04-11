@@ -14,13 +14,13 @@ import java.util.List;
 public class CourseTool {
 
     private final CourseService courseService;
-    public CourseTool(CourseService courseService,ChatModel model) {
+    public CourseTool(CourseService courseService) {
         this.courseService = courseService;
     }
 
     //returnDirect = true 直接返回给前端
     @Tool(description = "查询学生某一周的星期几的课程安排"
-            ,name = "queryOneDayCourses"
+            ,name = "queryOneDayCourses",returnDirect = true
     )
     public List<CourseScheduleView> queryOnedayCourses(
             @ToolParam(description = "第几周，1表示第一周") Integer week,

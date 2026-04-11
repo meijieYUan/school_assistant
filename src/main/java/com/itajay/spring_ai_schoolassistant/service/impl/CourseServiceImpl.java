@@ -5,16 +5,17 @@ import com.itajay.spring_ai_schoolassistant.entity.po.Course;
 import com.itajay.spring_ai_schoolassistant.entity.vo.CourseScheduleView;
 import com.itajay.spring_ai_schoolassistant.mapper.CourseMapper;
 import com.itajay.spring_ai_schoolassistant.service.CourseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements CourseService {
 
-    @Autowired
-    private CourseMapper courseMapper;
+    private final CourseMapper courseMapper;
     @Override
     public  List<CourseScheduleView>  findOneDayCourses(Integer week, Integer dayOfWeek) {
         return  courseMapper.findOneDayCourses(week, dayOfWeek);

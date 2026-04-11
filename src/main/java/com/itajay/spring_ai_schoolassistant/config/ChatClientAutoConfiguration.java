@@ -1,6 +1,11 @@
 package com.itajay.spring_ai_schoolassistant.config;
 
+import com.itajay.spring_ai_schoolassistant.Tools.courseTool.CourseTool;
 import com.itajay.spring_ai_schoolassistant.Tools.timeTool.TimeTool;
+import com.itajay.spring_ai_schoolassistant.Tools.wetherTool.WeatherTool;
+import com.itajay.spring_ai_schoolassistant.agent.InfoAgent;
+import com.itajay.spring_ai_schoolassistant.agent.KnowledgeAgent;
+import com.itajay.spring_ai_schoolassistant.agent.ScheduleAgent;
 import com.itajay.spring_ai_schoolassistant.consistant.SystemConsistant;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -31,44 +36,41 @@ public class ChatClientAutoConfiguration {
         return MessageWindowChatMemory.builder()
                 .chatMemoryRepository(jdbcChatMemoryRepository)
                 .build();
-
     }
 
     @Bean
-    public ChatClient mainClient(ChatModel chatModel, ChatMemory chatMemory) {
+    public ChatClient mainClient(ChatModel chatModel, ChatMemory chatMemory,
+             InfoAgent infoAgent, KnowledgeAgent knowledgeAgent, ScheduleAgent scheduleAgent) {
         return ChatClient.builder(chatModel)
-                .defaultSystem(SystemConsistant.MAIN_AGENT_SYSTEMP_PROMPT)
+                .defaultSystem(SystemConsistant.MAIN_AGENT_SYSTEM_PROMPT)
                 .defaultAdvisors(SimpleLoggerAdvisor.builder().build(),
                 MessageChatMemoryAdvisor.builder(chatMemory).build())
-                .defaultTools(new TimeTool())
+                .defaultTools(new TimeTool(),infoAgent,knowledgeAgent,scheduleAgent)
             .build();
     }
+
+   //subAgent采用无记忆状态，由主agent进行记忆管理和任务分发
     @Bean
-    public ChatClient infoClient(ChatModel chatModel, ChatMemory chatMemory) {
+    public ChatClient infoClient(ChatModel chatModel, WeatherTool weatherTool) {
         return ChatClient.builder(chatModel)
-                .defaultSystem(SystemConsistant.INFO_AGENT_SYSTEMP_PROMPT)
-                .defaultAdvisors(SimpleLoggerAdvisor.builder().build(),
-                        MessageChatMemoryAdvisor.builder(chatMemory).build())
-                .defaultTools(new TimeTool())
+                .defaultSystem(SystemConsistant.INFO_AGENT_SYSTEM_PROMPT)
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
+                .defaultTools(weatherTool)
                 .build();
     }
     @Bean
-    public ChatClient scheduleClient(ChatModel chatModel, ChatMemory chatMemory) {
+    public ChatClient scheduleClient(ChatModel chatModel, CourseTool courseTool) {
         return ChatClient.builder(chatModel)
-                .defaultSystem(SystemConsistant.SCHEDULE_AGENT_SYSTEMP_PROMPT)
-                .defaultAdvisors(SimpleLoggerAdvisor.builder().build(),
-                        MessageChatMemoryAdvisor.builder(chatMemory).build())
-                .defaultTools(new TimeTool())
+                .defaultSystem(SystemConsistant.SCHEDULE_AGENT_SYSTEM_PROMPT)
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
+                .defaultTools(courseTool)
                 .build();
     }
     @Bean
-    public ChatClient knowledgeClient(ChatModel chatModel, ChatMemory chatMemory) {
+    public ChatClient knowledgeClient(ChatModel chatModel) {
         return ChatClient.builder(chatModel)
-                .defaultSystem(SystemConsistant.KNOWLEDGE_AGENT_SYSTEMP_PROMPT)
-                .defaultAdvisors(SimpleLoggerAdvisor.builder().build(),
-                        MessageChatMemoryAdvisor.builder(chatMemory).build()
-                       )
-                .defaultTools(new TimeTool())
+                .defaultSystem(SystemConsistant.KNOWLEDGE_AGENT_SYSTEM_PROMPT)
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
                 .build();
     }
 }

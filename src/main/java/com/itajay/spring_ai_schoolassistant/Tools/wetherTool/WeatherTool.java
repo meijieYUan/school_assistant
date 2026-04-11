@@ -3,11 +3,13 @@ package com.itajay.spring_ai_schoolassistant.Tools.wetherTool;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import java.util.function.Function;
 
 @Log4j2
+@Component
 public class WeatherTool{
     RestClient geoClient = RestClient.builder()
             .baseUrl("https://geocoding-api.open-meteo.com/v1")
@@ -20,7 +22,8 @@ public class WeatherTool{
      * @param wetherRequest 查询某个城市的天气
      * @return  返回城市近期的天气情况
      */
-    @Tool(name = "queryWeather",description = "查询某个地方近期的天气情况，返回内容包含最高温度和最低温度")
+    @Tool(name = "queryWeather",description = "查询某个地方近期的天气情况，返回内容包含最高温度和最低温度",
+            returnDirect = true)
     public WetherResponse queryWeather(@ToolParam(description = "查询天气的请求参数") WetherRequest wetherRequest) {
 
         log.info("收到查询天气请求，开始地理解析！");

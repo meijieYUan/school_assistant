@@ -1,5 +1,7 @@
 package com.itajay.spring_ai_schoolassistant.agent;
 
+import com.itajay.spring_ai_schoolassistant.consistant.SystemConsistant;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.model.ChatModel;
@@ -9,6 +11,8 @@ import org.springframework.ai.rag.preretrieval.query.transformation.QueryTransfo
 import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
 import org.springframework.ai.rag.retrieval.search.DocumentRetriever;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.ObjectFactory;
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Service;
 /**
  *  RAG知识库检索问答agent
  */
+@Slf4j
 @Service
 public class KnowledgeAgent {
     @Autowired
@@ -28,9 +33,9 @@ public class KnowledgeAgent {
     private VectorStore vectorStore;
    @Autowired
    private ChatModel chatModel;
-
-    public String handle(String userMessage){
-
+    @Tool(name = "knowledgeAgent",description = SystemConsistant.KNOWLEDGE_TOOL_DESCIPTION)
+    public String handle(@ToolParam(description = "委托给子agent的任务描述信息") String taskDescription){
+        log.debug("接受主agent的任务："+taskDescription);
         //调用LLM重写用户询问词  ---单轮重写型
         RewriteQueryTransformer rewriteQueryTransformer = RewriteQueryTransformer.builder()
                 .chatClientBuilder(ChatClient.builder(chatModel).defaultOptions(ChatOptions.builder()
@@ -44,7 +49,7 @@ public class KnowledgeAgent {
                                 .vectorStore(vectorStore).similarityThreshold(0.6)
                                 .topK(3).build()).build();
         return knowledgeClient.prompt()
-                .user(userMessage)
+                .user(taskDescription)
                 .advisors(ragAdvisor)
                 .call()
                 .content();
