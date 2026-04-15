@@ -9,8 +9,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface CourseService extends IService<Course> {
-
+    //查询某天的课程
     List<CourseScheduleView>  findOneDayCourses(@Param("week") Integer week, @Param("dayOfWeek") Integer dayOfWeek);
-
+    //查询某周的课程
     List<CourseScheduleView>  findOneWeekCourses(@Param("week")Integer week);
 }

@@ -124,7 +124,7 @@ VALUES
 -- 软件工程：后半学期，每周
 (18, 9, 6, 7, 8, 11, 16, 'EVERY', '教学楼F102');
 
-
+drop table course_assignment;
 CREATE TABLE IF NOT EXISTS course_assignment
 (
     id          BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '作业ID',
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS course_assignment
     title       VARCHAR(255) NOT NULL COMMENT '作业标题',
     description TEXT COMMENT '作业详细描述和要求',
     deadline    DATETIME COMMENT '提交截止时间',
-    status      TINYINT UNSIGNED DEFAULT 1 COMMENT '作业状态：1-未发布，2-已发布，3-已结束',
+    status      TINYINT UNSIGNED DEFAULT 0 COMMENT '作业状态：0-待完成，1-已完成，2-已逾期',
 
     create_time DATETIME         DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time DATETIME         DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS task_list
     type          VARCHAR(32)      DEFAULT 'assignment' COMMENT '任务类型：assignment(作业)、exam(考试)、project(项目)、reminder(提醒)、other(其他)',
 
     priority      TINYINT UNSIGNED DEFAULT 2 COMMENT '优先级：1-高，2-中，3-低',
-    status        TINYINT UNSIGNED DEFAULT 0 COMMENT '任务状态：0-待办，1-进行中，2-已完成，3-已逾期',
+    status        TINYINT UNSIGNED DEFAULT 0 COMMENT '任务状态：0-待办，1-已完成，2-已逾期',
 
     deadline      DATETIME COMMENT '截止时间',
     complete_time DATETIME COMMENT '实际完成时间',

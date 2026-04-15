@@ -6,7 +6,6 @@ import com.itajay.spring_ai_schoolassistant.entity.vo.CourseScheduleView;
 import com.itajay.spring_ai_schoolassistant.mapper.CourseMapper;
 import com.itajay.spring_ai_schoolassistant.service.CourseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

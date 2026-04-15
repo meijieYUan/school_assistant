@@ -2,6 +2,10 @@ package com.itajay.spring_ai_schoolassistant.mapper;
 
 import com.itajay.spring_ai_schoolassistant.entity.po.CourseAssignment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itajay.spring_ai_schoolassistant.entity.vo.AssignmentView;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
 * @author Joy
@@ -11,6 +15,16 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface CourseAssignmentMapper extends BaseMapper<CourseAssignment> {
 
+    List<AssignmentView> queryAssignmentsByCourseName(String courseName);
+
+
+
+
+    List<AssignmentView> queryPendingAssignments(LocalDateTime now);
+
+    List<AssignmentView> queryOverdueAssignments();
+
+    List<AssignmentView> queryFinishedAssignments();
 }
 
 

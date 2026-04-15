@@ -37,4 +37,5 @@ public class CourseTool {
             @ToolParam(description = "第几周，1表示第一周") Integer week) {
         return courseService.findOneWeekCourses(week);
     }
+
 }

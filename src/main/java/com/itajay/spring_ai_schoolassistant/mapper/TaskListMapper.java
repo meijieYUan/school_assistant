@@ -2,6 +2,10 @@ package com.itajay.spring_ai_schoolassistant.mapper;
 
 import com.itajay.spring_ai_schoolassistant.entity.po.TaskList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itajay.spring_ai_schoolassistant.entity.vo.TaskView;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
 * @author Joy
@@ -11,6 +15,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface TaskListMapper extends BaseMapper<TaskList> {
 
+    List<TaskView> queryPendingTasks(LocalDateTime now);
+
+
+    List<TaskView> queryFinishedTaskList();
+
+    List<TaskView> queryOverdueTask();
 }
 
 

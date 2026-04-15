@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -39,29 +41,29 @@ public class TaskList {
     private Integer priority;
 
     /**
-     * 任务状态：0-待办，1-进行中，2-已完成，3-已逾期
+     * 任务状态：0-待办，1-已完成，2-已逾期
      */
     private Integer status;
 
     /**
      * 截止时间
      */
-    private Date deadline;
+    private LocalDateTime deadline;
 
     /**
      * 实际完成时间
      */
-    private Date completeTime;
+    private LocalDateTime completeTime;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 任务ID
@@ -150,56 +152,56 @@ public class TaskList {
     /**
      * 截止时间
      */
-    public Date getDeadline() {
+    public LocalDateTime getDeadline() {
         return deadline;
     }
 
     /**
      * 截止时间
      */
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
 
     /**
      * 实际完成时间
      */
-    public Date getCompleteTime() {
+    public LocalDateTime getCompleteTime() {
         return completeTime;
     }
 
     /**
      * 实际完成时间
      */
-    public void setCompleteTime(Date completeTime) {
+    public void setCompleteTime(LocalDateTime completeTime) {
         this.completeTime = completeTime;
     }
 
     /**
      * 创建时间
      */
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
     /**
      * 创建时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
     /**
      * 更新时间
      */
-    public Date getUpdateTime() {
+    public LocalDateTime getUpdateTime() {
         return updateTime;
     }
 
     /**
      * 更新时间
      */
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
 

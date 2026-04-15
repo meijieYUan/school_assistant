@@ -3,7 +3,9 @@ package com.itajay.spring_ai_schoolassistant.entity.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.springframework.ai.tool.annotation.ToolParam;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -26,32 +28,35 @@ public class CourseAssignment {
     /**
      * 作业标题
      */
+
     private String title;
 
     /**
      * 作业详细描述和要求
      */
+
     private String description;
 
     /**
      * 提交截止时间
      */
-    private Date deadline;
+
+    private LocalDateTime deadline;
 
     /**
-     * 作业状态：1-未发布，2-已发布，3-已结束
+     * '作业状态：0-待完成，1-已完成，2-已逾期'
      */
     private Integer status;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 作业ID
@@ -112,14 +117,14 @@ public class CourseAssignment {
     /**
      * 提交截止时间
      */
-    public Date getDeadline() {
+    public LocalDateTime getDeadline() {
         return deadline;
     }
 
     /**
      * 提交截止时间
      */
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
 
@@ -140,28 +145,28 @@ public class CourseAssignment {
     /**
      * 创建时间
      */
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
     /**
      * 创建时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
     /**
      * 更新时间
      */
-    public Date getUpdateTime() {
+    public LocalDateTime getUpdateTime() {
         return updateTime;
     }
 
     /**
      * 更新时间
      */
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
 

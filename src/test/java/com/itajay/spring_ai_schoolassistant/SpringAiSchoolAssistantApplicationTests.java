@@ -16,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.FileSystemResource;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -209,5 +212,13 @@ class SpringAiSchoolAssistantApplicationTests {
         String mapString = JSON.toJSONString(taskResult);
         System.out.println(mapString);
     }
+
+    @Test
+    void testDate(){
+        Date date = new Date(System.currentTimeMillis());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        System.out.println(localDateTime);
+    }
+
 
 }

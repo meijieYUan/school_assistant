@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class MainAgent {
     @Autowired
@@ -22,11 +26,13 @@ public class MainAgent {
                 .call()
                 .entity(RouteDecision.class);
     }*/
-
+   HashMap<String,Object> toolcontext = new HashMap<>();
     public Flux<String> handle(String userMessage,String chatId){
+        toolcontext.put("beginning",LocalDate.of(2026,3,1));
        return mainClient.prompt()
                .user(userMessage)
                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId))
+               .toolContext(toolcontext)
                 .stream()
                 .content();
     }

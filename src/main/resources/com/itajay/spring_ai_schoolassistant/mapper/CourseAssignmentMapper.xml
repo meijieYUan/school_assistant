@@ -15,8 +15,46 @@
             <result property="updateTime" column="update_time" />
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,course_id,title,description,deadline,status,
-        create_time,update_time
+    <sql id="AssignmentView_Column_List">
+        c.course_name AS courseName,
+        a.title       AS title,
+        a.description AS description,
+        a.deadline    AS deadline,
+        a.status      AS status
     </sql>
+
+    <select id="queryAssignmentsByCourseName"
+            resultType="com.itajay.spring_ai_schoolassistant.entity.vo.AssignmentView">
+        select
+           <include refid="AssignmentView_Column_List"/>
+        from course_assignment a
+        right join course c on c.id=a.course_id
+        where c.course_name=#{courseName};
+    </select>
+    <select id="queryFinishedAssignments"
+            resultType="com.itajay.spring_ai_schoolassistant.entity.vo.AssignmentView">
+        select
+            <include refid="AssignmentView_Column_List"/>
+            from course_assignment a
+            right join course c on a.course_id=c.id
+        where status=1;
+    </select>
+
+    <select id="queryPendingAssignments"
+            resultType="com.itajay.spring_ai_schoolassistant.entity.vo.AssignmentView">
+        select
+        <include refid="AssignmentView_Column_List"/>
+        from course_assignment a
+        right join course c on a.course_id=c.id
+        where status=0;
+    </select>
+
+    <select id="queryOverdueAssignments"
+            resultType="com.itajay.spring_ai_schoolassistant.entity.vo.AssignmentView">
+        select
+        <include refid="AssignmentView_Column_List"/>
+        from course_assignment a
+        right join course c on a.course_id=c.id
+        where status=2;
+    </select>
 </mapper>
