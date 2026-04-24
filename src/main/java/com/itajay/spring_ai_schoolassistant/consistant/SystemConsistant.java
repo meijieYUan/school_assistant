@@ -21,7 +21,8 @@ public class SystemConsistant {
     public static final String INFO_TOOL_DESCIPTION = """
             这是一个subAgent工具，功能：
             1.查询某个城市的最近天气状况
-            2.查询最近发生新闻
+            2.查询最近发生新闻，可按分类筛选(科技、体育、财经、娱乐等)
+            3.根据关键词搜索新闻
             """;
 
     public static final String SCHEDULE_TOOL_DESCIPTION = """

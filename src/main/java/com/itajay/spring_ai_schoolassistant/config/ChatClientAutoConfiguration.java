@@ -1,6 +1,7 @@
 package com.itajay.spring_ai_schoolassistant.config;
 
 import com.itajay.spring_ai_schoolassistant.Tools.courseTool.CourseTool;
+import com.itajay.spring_ai_schoolassistant.Tools.newsTool.NewsTool;
 import com.itajay.spring_ai_schoolassistant.Tools.timeTool.TimeTool;
 import com.itajay.spring_ai_schoolassistant.Tools.wetherTool.WeatherTool;
 import com.itajay.spring_ai_schoolassistant.agent.InfoAgent;
@@ -51,11 +52,11 @@ public class ChatClientAutoConfiguration {
 
    //subAgent采用无记忆状态，由主agent进行记忆管理和任务分发
     @Bean
-    public ChatClient infoClient(ChatModel chatModel, WeatherTool weatherTool) {
+    public ChatClient infoClient(ChatModel chatModel, WeatherTool weatherTool, NewsTool newsTool) {
         return ChatClient.builder(chatModel)
                 .defaultSystem(SystemConsistant.INFO_AGENT_SYSTEM_PROMPT)
                 .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
-                .defaultTools(weatherTool)
+                .defaultTools(weatherTool, newsTool)
                 .build();
     }
     @Bean
