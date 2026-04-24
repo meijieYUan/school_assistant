@@ -1,19 +1,16 @@
 package com.itajay.spring_ai_schoolassistant.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.ExtractedTextFormatter;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.reader.pdf.ParagraphPdfDocumentReader;
-import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-
-import javax.print.Doc;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class DocumentService {

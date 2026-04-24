@@ -39,13 +39,18 @@ public class NewsServiceImpl implements NewsService {
                 return getMockNews(category, limit);
             }
             
-            String endpoint = category != null && !category.isEmpty() 
-                    ? "/top-headlines?category=" + category + "&lang=zh&max=" + limit
-                    : "/top-headlines?lang=zh&max=" + limit;
-            
             GNewsResponse response = newsClient.get()
-                    .uri(endpoint)
-                    .header("Authorization", "Bearer " + apiKey)
+                    .uri(uriBuilder -> {
+                        var builder = uriBuilder
+                                .path("/top-headlines")
+                                .queryParam("lang", "zh")
+                                .queryParam("max", limit)
+                                .queryParam("apikey", apiKey);
+                        if (category != null && !category.isEmpty()) {
+                            builder.queryParam("category", category);
+                        }
+                        return builder.build();
+                    })
                     .retrieve()
                     .body(GNewsResponse.class);
             
@@ -70,8 +75,13 @@ public class NewsServiceImpl implements NewsService {
             }
             
             GNewsResponse response = newsClient.get()
-                    .uri("/search?q=" + keyword + "&lang=zh&max=" + limit)
-                    .header("Authorization", "Bearer " + apiKey)
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/search")
+                            .queryParam("q", keyword)
+                            .queryParam("lang", "zh")
+                            .queryParam("max", limit)
+                            .queryParam("apikey", apiKey)
+                            .build())
                     .retrieve()
                     .body(GNewsResponse.class);
             
